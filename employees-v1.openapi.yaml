@@ -28,8 +28,102 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Employee'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: Resource forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+
 components:
   schemas:
+    ErrorResponseBody:
+      title: Error Response
+      description: Error response body
+      type: object
+      required:
+        - statusCode
+        - requestId
+        - errors
+      properties:
+        statusCode:
+          type: integer
+          description: HTTP status code
+          example: '<http-status-code>'
+        requestId:
+          type: string
+          maxLength: 36
+          description: Identifier of a request
+          example: 86382285-a7d2-43a7-9a5f-ca9f5927da4e
+        errors:
+          type: array
+          description: List of errors.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+    ErrorDetail:
+      title: Error Detail
+      description: Error detail
+      type: object
+      required:
+        - code
+        - message
+        - type
+        - origin
+      properties:
+        code:
+          type: string
+          description: Error code that the client must be able to handle. It is upcase and unique for each error. It can also be used as key for localization.
+          maxLength: 50
+          example: '<UNIQUE_ERROR_CODE>'
+        message:
+          type: string
+          description: Error message
+          example: 'The request is invalid.'
+        type:
+          type: string
+          description: Type of the error.
+          enum:
+            - BUS
+            - SEC
+            - TEC
+        field:
+          type: string
+          description: Field name causing the error. Path of the object separated by dot.
+          example: 'employees.firstName'
+        origin:
+          type: string
+          maxLength: 255
+          description: 'Application name from where the error originated.'
+          example: <application-name>
+        suggestion:
+          type: string
+          maxLength: 255
+          description: 'Suggestion to solve the error.'
+          example: 'Please check if request is correct or refer to our documentation at https://api.mixer-lab.com/docs/errors#INVALID_REQUEST for more information.'
     Employee:
       type: object
       required:
