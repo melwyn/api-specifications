@@ -38,15 +38,9 @@ components:
         - firstName
         - lastName
         - salary
-        - hirerDate
+        - hireDate
         - location
         - email
-        - mobileNumber
-        - street
-        - city
-        - state
-        - postalCode
-        - country
         - status
       properties:
         id:
@@ -147,6 +141,21 @@ components:
             - SABBATICAL_LEAVE
             - SUSPENDED
             - TERMINATED
+        statusReason:
+          type: string
+          nullable: true
+          description: |
+            Employee status reason.
+            `mandatory if status is not ACTIVE`
+          example: RESIGNED
+          enum:
+            - RESIGNED
+            - RETIRED
+            - DISMISSED
+            - MISSCONDUCT
+            - UDERPERFORMANCE
+            - PERSOANL_REASONS
+            - OTHER
     Amount:
       type: object
       additionalProperties: false
