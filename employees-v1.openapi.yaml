@@ -1,0 +1,171 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Employees API
+tags:
+  - name: Employees
+    description: Operations about employees
+servers:
+  - url: http://mixer-lab.com/api/v1
+paths:
+  '/employees':
+    post:
+      tags:
+        - Employees
+      summary: Create a new employee
+      operationId: createEmployee
+      requestBody:
+        description: Employee object that needs to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: Employee created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+components:
+  schemas:
+    Employee:
+      type: object
+      required:
+        - id
+        - salutation
+        - firstName
+        - lastName
+        - salary
+        - hirerDate
+        - location
+        - email
+        - mobileNumber
+        - street
+        - city
+        - state
+        - postalCode
+        - country
+        - status
+      properties:
+        id:
+          description: Employee ID.
+          type: string
+          format: uuid
+          example: 2b82a358-0601-4fd3-8893-379ce5aab41c
+          maxLength: 36
+          readOnly: true
+        salutation:
+          description: The salutation of the customer.
+          type: string
+          example: Mr.
+          enum:
+            - Mr.
+            - Mrs.
+            - Miss.
+            - Master
+            - Dr.
+            - Prof.
+        firstName:
+          type: string
+          description: Employee name
+          maxLength: 255
+          example: Matt
+        lastName:
+          type: string
+          description: Employee name
+          maxLength: 255
+          example: Damon
+        salary:
+          $ref: '#/components/schemas/Amount'
+        hireDate:
+          type: string
+          format: date
+          description: Employee hire date
+          example: '2021-07-16'
+          maxLength: 10
+        lastDate:
+          type: string
+          format: date
+          description: Employee hire date
+          example: '2023-07-16'
+          maxLength: 10
+        location:
+          type: string
+          description: Employee location
+          maxLength: 255
+          example: New York, USA
+        email:
+          type: string
+          format: email
+          description: Employee email
+          pattern: ^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+$
+          example: 'john.doe@example.com'
+        mobileNumber:
+          type: string
+          format: phone
+          maxLength: 15
+          description: Employee phone
+          pattern: ^[0-9]{1,15}$
+          example: '4912345647890'
+        nationality:
+          description: Nationality
+          type: string
+          pattern: '[A-Z]{2}'
+          example: DE
+        street:
+          type: string
+          description: Employee street address
+        city:
+          type: string
+          description: Employee city
+          maxLength: 255
+          example: Munich
+        state:
+          type: string
+          description: Employee state
+          maxLength: 255
+          example: Bayern
+        postalCode:
+          type: string
+          description: Employee postal code (zip)
+          maxLength: 255
+          example: "80335"
+        country:
+          type: string
+          description: Employee country (ISO-3166)
+          pattern: '[A-Z]{2}'
+          example: DE
+        status:
+          type: string
+          description: Employee status
+          example: ACTIVE
+          enum:
+            - ACTIVE
+            - INACTIVE
+            - SABBATICAL_LEAVE
+            - SUSPENDED
+            - TERMINATED
+    Amount:
+      type: object
+      additionalProperties: false
+      description: >-
+        Information about the amount.
+      properties:
+        currency:
+          type: string
+          description: Currency code (ISO 4217).
+          pattern: '[A-Z]{3}'
+          example: EUR
+          maxLength: 3
+        value:
+          type: number
+          format: decimal
+          description: Amount value.
+          example: 4300.000
+      required:
+        - currency
+        - value
+
+
