@@ -240,6 +240,7 @@ components:
           type: string
           description: Error message
           example: 'The request is invalid.'
+          maxLength: 255
         type:
           type: string
           description: Type of the error.
@@ -251,6 +252,7 @@ components:
           type: string
           description: Field name causing the error. Path of the object separated by dot.
           example: 'employees.firstName'
+          maxLength: 255
         origin:
           type: string
           maxLength: 255
@@ -270,10 +272,9 @@ components:
         - lastName
         - grossSalary
         - netSalary
-        - hireDate
-        - location
-        - email
         - status
+        - hireDate
+        - email
       properties:
         id:
           description: Employee ID.
@@ -311,64 +312,6 @@ components:
           $ref: '#/components/schemas/Amount'
         netVariableBonus:
           $ref: '#/components/schemas/Amount'
-        hireDate:
-          type: string
-          format: date
-          description: Employee hire date
-          example: '2021-07-16'
-          maxLength: 10
-        lastDate:
-          type: string
-          format: date
-          description: Employee hire date
-          example: '2023-07-16'
-          maxLength: 10
-        location:
-          type: string
-          description: Employee location
-          maxLength: 255
-          example: New York, USA
-        email:
-          type: string
-          format: email
-          description: Employee email
-          pattern: ^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+$
-          example: 'john.doe@example.com'
-        mobileNumber:
-          type: string
-          format: phone
-          maxLength: 15
-          description: Employee phone
-          pattern: ^[0-9]{1,15}$
-          example: '4912345647890'
-        nationality:
-          description: Nationality
-          type: string
-          pattern: '[A-Z]{2}'
-          example: DE
-        street:
-          type: string
-          description: Employee street address
-        city:
-          type: string
-          description: Employee city
-          maxLength: 255
-          example: Munich
-        state:
-          type: string
-          description: Employee state
-          maxLength: 255
-          example: Bayern
-        postalCode:
-          type: string
-          description: Employee postal code (zip)
-          maxLength: 255
-          example: "80335"
-        country:
-          type: string
-          description: Employee country (ISO-3166)
-          pattern: '[A-Z]{2}'
-          example: DE
         status:
           $ref: '#/components/schemas/Status'
         statusReason:
@@ -386,6 +329,62 @@ components:
             - UDERPERFORMANCE
             - PERSOANL_REASONS
             - OTHER
+        hireDate:
+          type: string
+          format: date
+          description: Employee hire date
+          example: '2021-07-16'
+          maxLength: 10
+        lastDate:
+          type: string
+          format: date
+          description: Employee hire date
+          example: '2023-07-16'
+          maxLength: 10
+        email:
+          type: string
+          format: email
+          description: Employee email
+          pattern: ^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+$
+          example: 'john.doe@example.com'
+          maxLength: 255
+        mobileNumber:
+          type: string
+          format: phone
+          maxLength: 15
+          description: Employee phone
+          pattern: ^[0-9]{1,15}$
+          example: '4912345647890'
+        nationality:
+          description: Nationality of the employee. Country code (ISO 3166-1 alpha-2).
+          type: string
+          pattern: '[A-Z]{2}'
+          example: DE
+          maxLength: 2
+        street:
+          type: string
+          description: Employee street address
+        city:
+          type: string
+          description: Employee city
+          maxLength: 255
+          example: Munich
+        state:
+          type: string
+          description: Employee state
+          maxLength: 255
+          example: Bayern
+        postalCode:
+          type: string
+          description: Employee postal code (zip)
+          maxLength: 10
+          example: "80335"
+        country:
+          type: string
+          description: Employee country (ISO 3166-1 alpha-2).
+          pattern: '[A-Z]{2}'
+          example: DE
+          maxLength: 2
     Amount:
       type: object
       additionalProperties: false
