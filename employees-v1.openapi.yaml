@@ -58,7 +58,144 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseBody'
-
+    get:
+      tags:
+        - Employees
+      summary: Get all employees
+      operationId: getEmployees
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/Status'
+          description: Status of employees.
+          required: false
+        - in: query
+          name: range
+          schema:
+            type: string
+            maxLength: 255
+            example: '49-99'
+          description: Index range of the employees.
+          required: false
+      responses:
+        '200':
+          description: A list of employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+        '206':
+          description: Successful response, if items returned are a subset of the full list.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+          headers:
+            Content-Range:
+              schema:
+                type: string
+                example: 'employees 0-25/5000'
+              description: The pattern is `unit offset-limit/total` with offset being 0 based.
+            Accept-Ranges:
+              schema:
+                type: string
+                example: 'employees 50'
+              description: >-
+                The pattern is `resource max` with the resource being currently
+                paginated and the maximum number this resource can return at once.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: Resource forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '416':
+          description: Requested Range Not Satisfiable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+  '/employees/{employeeId}':
+    get:
+      tags:
+        - Employees
+      summary: Get employee by ID
+      operationId: getEmployeeById
+      parameters:
+        - name: employeeId
+          in: path
+          description: ID of employee to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 2b82a358-0601-4fd3-8893-379ce5aab41c
+      responses:
+        '200':
+          description: Employee found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '403':
+          description: Resource forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
 components:
   schemas:
     ErrorResponseBody:
@@ -233,15 +370,7 @@ components:
           pattern: '[A-Z]{2}'
           example: DE
         status:
-          type: string
-          description: Employee status
-          example: INACTIVE
-          enum:
-            - ACTIVE
-            - INACTIVE
-            - SABBATICAL_LEAVE
-            - SUSPENDED
-            - TERMINATED
+          $ref: '#/components/schemas/Status'
         statusReason:
           type: string
           nullable: true
@@ -277,5 +406,15 @@ components:
       required:
         - currency
         - value
+    Status:
+      type: string
+      description: Employee status
+      example: INACTIVE
+      enum:
+        - ACTIVE
+        - INACTIVE
+        - SABBATICAL_LEAVE
+        - SUSPENDED
+        - TERMINATED
 
 
