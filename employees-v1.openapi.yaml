@@ -123,7 +123,7 @@ components:
           type: string
           maxLength: 255
           description: 'Suggestion to solve the error.'
-          example: 'Please check if request is correct or refer to our documentation at https://api.mixer-lab.com/docs/errors#INVALID_REQUEST for more information.'
+          example: 'Please check if request is correct or refer to our documentation at https://api.mixer-lab.com/docs/errors#<UNIQUE_ERROR_CODE> for more information.'
     Employee:
       type: object
       required:
@@ -131,7 +131,8 @@ components:
         - salutation
         - firstName
         - lastName
-        - salary
+        - grossSalary
+        - netSalary
         - hireDate
         - location
         - email
@@ -165,7 +166,13 @@ components:
           description: Employee name
           maxLength: 255
           example: Damon
-        salary:
+        grossSalary:
+          $ref: '#/components/schemas/Amount'
+        netSalary:
+          $ref: '#/components/schemas/Amount'
+        grossVariableBonus:
+          $ref: '#/components/schemas/Amount'
+        netVariableBonus:
           $ref: '#/components/schemas/Amount'
         hireDate:
           type: string
