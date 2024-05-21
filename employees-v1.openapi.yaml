@@ -304,14 +304,6 @@ components:
           description: Employee name
           maxLength: 255
           example: Damon
-        grossSalary:
-          $ref: '#/components/schemas/Amount'
-        netSalary:
-          $ref: '#/components/schemas/Amount'
-        grossVariableBonus:
-          $ref: '#/components/schemas/Amount'
-        netVariableBonus:
-          $ref: '#/components/schemas/Amount'
         status:
           $ref: '#/components/schemas/Status'
         statusReason:
