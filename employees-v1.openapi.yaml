@@ -14,6 +14,9 @@ paths:
         - Employees
       summary: Create a new employee
       operationId: createEmployee
+      security:
+        - OAuth2:
+            - dbs.banking.employees
       requestBody:
         description: Employee object that needs to be added
         required: true
@@ -63,6 +66,10 @@ paths:
         - Employees
       summary: Get all employees
       operationId: getEmployees
+      security:
+        - OAuth2:
+            - dbs.banking.employees
+            - dbs.banking.employees.readonly
       parameters:
         - in: query
           name: status
@@ -150,6 +157,10 @@ paths:
         - Employees
       summary: Get employee by ID
       operationId: getEmployeeById
+      security:
+        - OAuth2:
+            - dbs.banking.employees
+            - dbs.banking.employees.readonly
       parameters:
         - name: employeeId
           in: path
@@ -197,6 +208,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseBody'
 components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: |
+        All API enpoints require an bearer access token within the Authorization
+        header, unless specified otherwise.
+      flows:
+        authorizationCode:
+          authorizationUrl: '/auth/realms/:realmId/protocol/openid-connect/auth'
+          tokenUrl: '/auth/realms/:realmId/protocol/openid-connect/token'
+          refreshUrl: '/auth/realms/:realmId/protocol/openid-connect/token'
+          scopes:
+            dbs.banking.employees: Manage Employees
+            dbs.banking.employees.readonly: View Employees
   schemas:
     ErrorResponseBody:
       title: Error Response
